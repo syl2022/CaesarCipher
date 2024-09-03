@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: caesarcipher
+  labels:
+    app: caesarcipher
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: caesarcipher
+  template:
+    metadata:
+      name: caesarcipher
+      labels:
+        app: caesarcipher
+    spec:
+      containers:
+        - name: caesarcipher
+          image: shruti2022yl/caesarcipher
+          ports:
+            - containerPort: 8080
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: caesarcipher-service
+spec:
+  selector:
+    app: caesarcipher
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+      nodePort: 30080
+  type: LoadBalancer
+      
